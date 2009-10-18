@@ -901,8 +901,14 @@ void CMultiplayerSA::InitHooks()
     // Don't get golf clubs from caddies
     *(BYTE *)0x6D1A1A = 0xEB;
 
-	// Don't get 20 health from ambulances
-	*(BYTE *)0x6D1762 = 0x00;
+    // Don't get 20 health from ambulances
+    *(BYTE *)0x6D1762 = 0x00;
+
+    // Prevent bikes from stalling when driven through water
+    memset((void *)0x6B6302, 0x90, 6);
+
+    // Prevent automobiles from stalling when driven through water
+    memset((void *)0x6A90C7, 0x90, 6);
 
     // Prevent CVehicle::RecalcTrainRailPosition from changing train speed
     memset((void *)0x6F701D, 0x90, 6);
