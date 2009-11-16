@@ -923,6 +923,22 @@ void CMultiplayerSA::InitHooks()
     // Allow objects to be scaled back to 1
     *(BYTE *)0x59FE18 = 0xEB;
 
+    // Prevent players from resetting at -100
+    *(BYTE *)0x565D0D = 0xE9;
+    *(BYTE *)0x565D0E = 0x5D;
+    *(BYTE *)0x565D0F = 0x01;
+    *(BYTE *)0x565D10 = 0x00;
+    *(BYTE *)0x565D11 = 0x00;
+    *(BYTE *)0x565D12 = 0x90;
+
+    // Prevent vehicles from resetting at -100
+    *(BYTE *)0x565EDD = 0xE9;
+    *(BYTE *)0x565EDE = 0xB9;
+    *(BYTE *)0x565EDF = 0x01;
+    *(BYTE *)0x565EE0 = 0x00;
+    *(BYTE *)0x565EE1 = 0x00;
+    *(BYTE *)0x565EE2 = 0x90;
+
     // Prevent CVehicle::RecalcTrainRailPosition from changing train speed
     memset((void *)0x6F701D, 0x90, 6);
     *(BYTE *)0x6F7069 = 0xEB;
