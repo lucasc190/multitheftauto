@@ -71,6 +71,7 @@ public:
     static bool                         IsElementInWater                    ( CClientEntity& Entity, bool & bInWater );
     static bool                         IsElementSyncer                     ( CClientEntity& Entity, bool & bIsSyncer );
     static bool                         IsElementCollidableWith             ( CClientEntity& Entity, CClientEntity& ThisEntity, bool & bCanCollide );
+    static bool                         CanElementFloat                     ( CClientEntity& Entity, bool & bCanFloat );
     // Element set funcs
     static CClientDummy*                CreateElement                       ( CResource& Resource, const char* szTypeName, const char* szID );
     static bool                         DestroyElement                      ( CClientEntity& Entity );
@@ -90,6 +91,7 @@ public:
     static bool                         SetElementModel                     ( CClientEntity& Entity, unsigned short usModel );
     static bool                         SetElementCollisionsEnabled         ( CClientEntity& Entity, bool bEnabled );
     static bool                         SetElementCollidableWith            ( CClientEntity& Entity, CClientEntity& ThisEntity, bool bCanCollide );
+    static bool                         SetElementCanFloat                  ( CClientEntity& Entity, bool bCanFloat );
 
     // Radio funcs
     static bool                         SetRadioChannel                     ( unsigned char& ucChannel );
@@ -397,7 +399,7 @@ public:
     static bool                         SetTime                             ( unsigned char ucHour, unsigned char ucMin );
     static bool                         SetSkyGradient                      ( unsigned char ucTopRed, unsigned char ucTopGreen, unsigned char ucTopBlue, unsigned char ucBottomRed, unsigned char ucBottomGreen, unsigned char ucBottomBlue );
     static bool                         ResetSkyGradient                    ( void );
-	 static bool                         SetWaterColor                       ( float fWaterRed, float fWaterGreen, float fWaterBlue, float fWaterAlpha );
+    static bool                         SetWaterColor                       ( float fWaterRed, float fWaterGreen, float fWaterBlue, float fWaterAlpha );
     static bool                         ResetWaterColor                     ( void );
     static bool                         SetWeather                          ( unsigned char ucWeather );
     static bool                         SetWeatherBlended                   ( unsigned char ucWeather );

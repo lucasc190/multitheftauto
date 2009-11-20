@@ -2024,6 +2024,7 @@ void CClientVehicle::Create ( void )
         m_pVehicle->SetBodyDirtLevel ( m_fDirtLevel );
         m_pVehicle->SetEngineOn ( m_bEngineOn );
         m_pVehicle->SetAreaCode ( m_ucInterior );
+        m_pVehicle->SetCanFloat ( m_bCanFloat );
         m_pVehicle->SetSmokeTrailEnabled ( m_bSmokeTrail );
         m_pVehicle->SetGravity ( &m_vecGravity );
         m_pVehicle->SetHeadLightColor ( m_HeadLightColor );

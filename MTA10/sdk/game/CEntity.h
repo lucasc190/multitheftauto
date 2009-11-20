@@ -77,6 +77,8 @@ public:
     virtual void                        SetWas ( CVector *vecWas ) =0;
 	virtual void						SetUnderwater ( bool bUnderwater )=0;
 	virtual bool						GetUnderwater ( void )=0;
+	virtual void						SetCanFloat ( bool bCanFloat )=0;
+	virtual bool						CanFloat ( void )=0;
     virtual RwFrame *                   GetFrameFromId ( int id )=0;
     virtual RwMatrix *                  GetLTMFromId ( int id )=0;
 

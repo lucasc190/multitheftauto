@@ -236,6 +236,8 @@ public:
     void                                        SetStatic                   ( bool bStatic );
     unsigned char                               GetInterior                 ( void );
     virtual void                                SetInterior                 ( unsigned char ucInterior );
+    bool                                        CanFloat                    ( void );
+    virtual void                                SetCanFloat                 ( bool bCanFloat );
     bool                                        IsOnScreen                  ( void );
     virtual RpClump *                           GetClump                    ( void );
 
@@ -274,6 +276,7 @@ protected:
     std::list < CClientPed * >                  m_OriginSourceUsers;
     std::list < CClientPed * >                  m_Contacts;
     unsigned char                               m_ucInterior;
+    bool                                        m_bCanFloat;
     std::map < CClientEntity *, bool >          m_DisabledCollisions;
 
 private:

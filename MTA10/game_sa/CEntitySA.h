@@ -176,7 +176,7 @@ class CEntitySA : public virtual CEntity
 {
     friend COffsets;
 public:
-                                CEntitySA           ( void ) { m_pStoredPointer = NULL; m_ulArrayID = 0; };
+                                CEntitySA           ( void ) { m_pStoredPointer = NULL; m_ulArrayID = 0; m_bCanFloat = true; };
 
 	CEntitySAInterface*         m_pInterface;
 
@@ -200,6 +200,8 @@ public:
 
 	void						SetUnderwater ( bool bUnderwater );
 	bool						GetUnderwater ( void );
+    void                        SetCanFloat ( bool bCanFloat ) { m_bCanFloat  = bCanFloat; }
+    bool                        CanFloat ( void ) { return m_bCanFloat; }
 
 	CVector						* GetPosition (  );
 	CMatrix						* GetMatrix ( CMatrix * matrix ) const;
@@ -276,6 +278,7 @@ private:
 	};*/
 
     void*                       m_pStoredPointer;
+    bool                        m_bCanFloat;
 };
 
 #endif

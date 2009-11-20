@@ -45,6 +45,7 @@ unsigned long CMultiplayerSA::HOOKPOS_CVehicle_SetupRender;
 unsigned long CMultiplayerSA::HOOKPOS_CVehicle_ResetAfterRender;
 unsigned long CMultiplayerSA::HOOKPOS_CObject_Render;
 unsigned long CMultiplayerSA::HOOKPOS_EndWorldColors;
+unsigned long CMultiplayerSA::HOOKPOS_IsPhysicalInWater;
 unsigned long CMultiplayerSA::HOOKPOS_CWorld_ProcessVerticalLineSectorList;
 unsigned long CMultiplayerSA::HOOKPOS_ComputeDamageResponse_StartChoking;
 
@@ -246,6 +247,7 @@ void HOOK_CVehicle_SetupRender ();
 void HOOK_CVehicle_ResetAfterRender();
 void HOOK_CObject_Render ();
 void HOOK_EndWorldColors ();
+void HOOK_IsPhysicalInWater ();
 void HOOK_CWorld_ProcessVerticalLineSectorList ();
 void HOOK_ComputeDamageResponse_StartChoking ();
 void HOOK_CollisionStreamRead ();
@@ -361,6 +363,7 @@ void CMultiplayerSA::InitHooks()
     HookInstall(HOOKPOS_CVehicle_ResetAfterRender, (DWORD)HOOK_CVehicle_ResetAfterRender, 5);
     HookInstall(HOOKPOS_CObject_Render, (DWORD)HOOK_CObject_Render, 5);
 	HookInstall(HOOKPOS_EndWorldColors, (DWORD)HOOK_EndWorldColors, 5);
+	HookInstall(HOOKPOS_IsPhysicalInWater, (DWORD)HOOK_IsPhysicalInWater, 5);
     HookInstall(HOOKPOS_CWorld_ProcessVerticalLineSectorList, (DWORD)HOOK_CWorld_ProcessVerticalLineSectorList, 8);
     HookInstall(HOOKPOS_ComputeDamageResponse_StartChoking, (DWORD)HOOK_ComputeDamageResponse_StartChoking, 7);
     HookInstall(HOOKPOS_CollisionStreamRead, (DWORD)HOOK_CollisionStreamRead, 6);
@@ -2618,6 +2621,51 @@ void _declspec(naked) HOOK_EndWorldColors ()
 	 _asm
     {
         ret
+    }
+}
+
+// Note: This hook is only called if the physical being checked is in water.
+static DWORD dwIsPhysicalInWaterRet = 0x6C4107;
+static DWORD dwSinkEntity = 0;
+
+bool CanEntityFloat ( )
+{
+    CEntity* pEntity = pGameInterface->GetPools ()->GetEntity ( (DWORD *)dwSinkEntity );
+    if ( !pEntity )
+        return true;
+
+    return pEntity->CanFloat();
+}
+
+void _declspec(naked) HOOK_IsPhysicalInWater ()
+{
+    _asm
+    {
+        mov dwSinkEntity,esi
+        pushad
+    }
+    if ( CanEntityFloat () )
+    {
+        _asm
+        {
+            popad
+            mov al,0x1
+        }
+    }
+    else
+    {
+        _asm
+        {
+            popad
+            mov al,0x0
+        }
+    }
+    _asm
+    {
+        pop edi
+        pop esi
+        pop ebp
+        jmp dwIsPhysicalInWaterRet
     }
 }
 

@@ -1128,6 +1128,30 @@ int CLuaFunctionDefs::IsElementSyncer ( lua_State* luaVM )
     return 1;
 }
 
+
+int CLuaFunctionDefs::CanElementFloat ( lua_State* luaVM )
+{
+    if ( lua_istype ( luaVM, 1, LUA_TLIGHTUSERDATA ) )
+    {
+        // Grab the entity and verify it.
+        CClientEntity* pEntity = lua_toelement ( luaVM, 1 );
+        if ( pEntity )
+        {
+            bool bCanFloat = false;
+            if ( CStaticFunctionDefinitions::CanElementFloat ( *pEntity, bCanFloat ) )
+            {
+                lua_pushboolean ( luaVM, bCanFloat );
+                return 1;
+            }
+        }
+    }
+    else
+        m_pScriptDebugging->LogBadType ( luaVM, "canElementFloat" );
+
+    lua_pushboolean ( luaVM, false );
+    return 1;
+}
+
 int CLuaFunctionDefs::IsElementCollidableWith ( lua_State* luaVM )
 {
     if ( lua_istype ( luaVM, 1, LUA_TLIGHTUSERDATA ) &&
@@ -1861,7 +1885,6 @@ int CLuaFunctionDefs::SetElementCollisionsEnabled ( lua_State* luaVM )
         CClientEntity* pEntity = lua_toelement ( luaVM, 1 );
         if ( pEntity )
         {
-            bool bEnabled = ( lua_toboolean ( luaVM, 2 ) ) ? true:false;
             if ( CStaticFunctionDefinitions::SetElementCollisionsEnabled ( *pEntity, lua_toboolean ( luaVM, 2 ) ? true:false ) )
             {
                 lua_pushboolean ( luaVM, true );    
@@ -1873,6 +1896,31 @@ int CLuaFunctionDefs::SetElementCollisionsEnabled ( lua_State* luaVM )
     }
     else
         m_pScriptDebugging->LogBadType ( luaVM, "setElementCollisionsEnabled" );
+
+    lua_pushboolean ( luaVM, false );
+    return 1;
+}
+
+
+int CLuaFunctionDefs::SetElementCanFloat ( lua_State* luaVM )
+{
+    if ( lua_type ( luaVM, 1 ) == LUA_TLIGHTUSERDATA &&
+        lua_type ( luaVM, 2 ) == LUA_TBOOLEAN )
+    {
+        CClientEntity* pEntity = lua_toelement ( luaVM, 1 );
+        if ( pEntity )
+        {
+            if ( CStaticFunctionDefinitions::SetElementCanFloat ( *pEntity, lua_toboolean ( luaVM, 2 ) ? true:false ) )
+            {
+                lua_pushboolean ( luaVM, true );    
+                return 1;
+            }        
+        }
+        else
+            m_pScriptDebugging->LogBadPointer ( luaVM, "setElementCanFloat", "element", 1 );
+    }
+    else
+        m_pScriptDebugging->LogBadType ( luaVM, "setElementCanFloat" );
 
     lua_pushboolean ( luaVM, false );
     return 1;

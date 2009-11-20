@@ -38,6 +38,7 @@ CClientEntity::CClientEntity ( ElementID ID )
     m_bSystemEntity = false;
     m_ucSyncTimeContext = 0;
     m_ucInterior = 0;
+	m_bCanFloat = true;
 
     // Need to generate a clientside ID?
     if ( ID == INVALID_ELEMENT_ID )
@@ -1214,6 +1215,28 @@ void CClientEntity::SetInterior ( unsigned char ucInterior )
         pEntity->SetAreaCode ( ucInterior );
     }
     m_ucInterior = ucInterior;
+}
+
+
+bool CClientEntity::CanFloat ( void )
+{
+    CEntity * pEntity = GetGameEntity ();
+    if ( pEntity )
+    {
+        return pEntity->CanFloat ();
+    }
+    return m_bCanFloat;
+}
+
+
+void CClientEntity::SetCanFloat ( bool bCanFloat )
+{
+    CEntity * pEntity = GetGameEntity ();
+    if ( pEntity )
+    {
+        pEntity->SetCanFloat ( bCanFloat );
+    }
+    m_bCanFloat = bCanFloat;
 }
 
 

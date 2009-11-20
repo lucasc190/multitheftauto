@@ -3043,6 +3043,7 @@ void CClientGame::Event_OnIngame ( void )
         m_pLocalPlayer->SetPosition ( CVector ( 0, 0, 0 ) );
         m_pLocalPlayer->SetFrozen ( true );
         m_pLocalPlayer->ResetInterpolation ();
+		m_pLocalPlayer->SetCanFloat ( true );
 
         // Reset him
         m_pLocalPlayer->ResetStats ();
@@ -4267,6 +4268,9 @@ void CClientGame::ResetMapInfo ( void )
 
         // Frozen state
         m_pLocalPlayer->SetFrozen ( false );
+
+		// Can-float state
+		m_pLocalPlayer->SetCanFloat ( true );
 
         // Voice
         short sVoiceType, sVoiceID;

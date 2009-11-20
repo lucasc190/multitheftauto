@@ -643,6 +643,24 @@ bool CStaticFunctionDefinitions::IsElementSyncer ( CClientEntity& Entity, bool &
 }
 
 
+bool CStaticFunctionDefinitions::CanElementFloat ( CClientEntity& Entity, bool & bCanFloat )
+{
+    switch ( Entity.GetType () )
+    {
+        case CCLIENTPLAYER:
+        case CCLIENTPED:
+        case CCLIENTOBJECT:
+        case CCLIENTVEHICLE:
+        {
+            bCanFloat = Entity.CanFloat();
+			break;
+        }
+        default: return false;
+    }
+    return true;
+}
+
+
 bool CStaticFunctionDefinitions::IsElementCollidableWith ( CClientEntity& Entity, CClientEntity& ThisEntity, bool & bCanCollide )
 {
     switch ( Entity.GetType () )
@@ -2674,6 +2692,26 @@ bool CStaticFunctionDefinitions::SetElementCollisionsEnabled ( CClientEntity& En
     }
 
     return true;
+}
+
+
+bool CStaticFunctionDefinitions::SetElementCanFloat ( CClientEntity& Entity, bool bCanFloat )
+{
+    RUN_CHILDREN SetElementCanFloat ( **iter, bCanFloat );
+
+	switch ( Entity.GetType () )
+    {
+        case CCLIENTVEHICLE:
+        case CCLIENTOBJECT:
+        case CCLIENTPED:
+        case CCLIENTPLAYER:
+        {
+            Entity.SetCanFloat ( bCanFloat );
+            break;
+        }
+        default: return false;
+    }
+	return true;
 }
 
 

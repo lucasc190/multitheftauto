@@ -390,6 +390,7 @@ void CClientObject::Create ( void )
                 if ( !m_bUsesCollision ) SetCollisionEnabled ( false );
                 if ( m_fScale != 1.0f ) SetScale ( m_fScale );
                 m_pObject->SetAreaCode ( m_ucInterior );
+                SetCanFloat ( m_bCanFloat );
                 SetAlpha ( m_ucAlpha );
 
                 // Reattach to an entity + any entities attached to this

@@ -2867,6 +2867,7 @@ void CClientPed::_CreateModel ( void )
         m_pPlayerPed->SetMoveAnim ( m_MoveAnim );
         SetHasJetPack ( m_bHasJetPack );                
         SetInterior ( m_ucInterior );
+        SetCanFloat ( m_bCanFloat );
         SetAlpha ( m_ucAlpha );
         SetChoking ( m_bIsChoking );
         SetSunbathing ( m_bSunbathing, false );
