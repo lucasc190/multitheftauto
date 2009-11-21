@@ -245,6 +245,7 @@ CClientPed::~CClientPed ( void )
 		m_pClothes->DefaultClothes ( true );
         SetCanBeKnockedOffBike ( true );
         SetHeadless ( false );
+		SetCanFloat ( true );
     }
     else
     {

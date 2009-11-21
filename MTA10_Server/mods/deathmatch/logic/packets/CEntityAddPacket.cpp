@@ -159,7 +159,9 @@ bool CEntityAddPacket::Write ( NetBitStreamInterface& BitStream ) const
                     SEntityAlphaSync alpha;
                     alpha.data.ucAlpha = pObject->GetAlpha ();
                     BitStream.Write ( &alpha );
-
+					
+                    BitStream.WriteBit ( pObject->CanFloat () );
+					
                     bool bIsMoving = pObject->IsMoving ();
                     BitStream.WriteBit ( bIsMoving );
 
@@ -338,6 +340,7 @@ bool CEntityAddPacket::Write ( NetBitStreamInterface& BitStream ) const
                     BitStream.WriteBit ( pVehicle->AreDoorsUndamageable () );
                     BitStream.WriteBit ( pVehicle->IsDamageProof () );
                     BitStream.WriteBit ( pVehicle->IsFrozen () );
+                    BitStream.WriteBit ( pVehicle->CanFloat () );
                     BitStream.WriteBit ( pVehicle->IsDerailed () );
                     BitStream.WriteBit ( pVehicle->IsDerailable () );
                     BitStream.WriteBit ( pVehicle->GetTrainDirection () );
@@ -560,6 +563,7 @@ bool CEntityAddPacket::Write ( NetBitStreamInterface& BitStream ) const
                     BitStream.WriteBit ( pPed->IsSyncable () );
                     BitStream.WriteBit ( pPed->IsHeadless () );
                     BitStream.WriteBit ( pPed->IsFrozen () );
+                    BitStream.WriteBit ( pPed->CanFloat () );
 
                     // alpha
                     SEntityAlphaSync alpha;

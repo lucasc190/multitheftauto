@@ -207,6 +207,9 @@ public:
     inline unsigned char                        GetInterior                 ( void )                        { return m_ucInterior; }
     inline void                                 SetInterior                 ( unsigned char ucInterior )    { m_ucInterior = ucInterior; }
 
+    inline bool                                 CanFloat                    ( void )                        { return m_bCanFloat; }
+    inline void                                 SetCanFloat                 ( bool bCanFloat )              { m_bCanFloat = bCanFloat; }
+
     inline bool                                 IsMapCreated                ( void )                        { return m_bMapCreated; }
 
 protected:
@@ -256,6 +259,8 @@ protected:
     std::list < class CPed * >                  m_OriginSourceUsers;
     unsigned char                               m_ucInterior;
     bool                                        m_bMapCreated;
+    bool                                        m_bCanFloat;
+
 
     // Optimization for getElementsByType starting at root
 public:

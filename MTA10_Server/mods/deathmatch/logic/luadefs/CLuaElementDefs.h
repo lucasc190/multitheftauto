@@ -54,6 +54,7 @@ public:
     static int      getElementModel                     ( lua_State* luaVM );
     static int      isElementInWater                    ( lua_State* luaVM );
     static int      getElementSyncer                    ( lua_State* luaVM );
+    static int      canElementFloat                     ( lua_State* luaVM );
 
     // Visible to
     static int      clearElementVisibleTo               ( lua_State* luaVM );
@@ -83,6 +84,7 @@ public:
     static int      setElementAlpha                     ( lua_State* luaVM );
     static int      setElementHealth                    ( lua_State* luaVM );
     static int      setElementModel                     ( lua_State* luaVM );
+    static int      setElementCanFloat                  ( lua_State* luaVM );
 };
 
 #endif

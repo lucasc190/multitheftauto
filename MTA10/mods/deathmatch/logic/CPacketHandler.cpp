@@ -508,6 +508,7 @@ void CPacketHandler::Packet_PlayerList ( NetBitStreamInterface& bitStream )
         bool bHasNametagColorOverridden = bitStream.ReadBit ();
         bool bIsHeadless = bitStream.ReadBit ();
         bool bIsFrozen = bitStream.ReadBit ();
+        bool bCanFloat = bitStream.ReadBit ();
 
         // Player nametag text
         char szNametagText [MAX_PLAYER_NICK_LENGTH + 1];
@@ -658,6 +659,7 @@ void CPacketHandler::Packet_PlayerList ( NetBitStreamInterface& bitStream )
                 }
                 pPlayer->SetHeadless ( bIsHeadless );
                 pPlayer->SetFrozen ( bIsFrozen );
+                pPlayer->SetCanFloat ( bCanFloat );
                 pPlayer->SetDimension ( usDimension );
                 pPlayer->SetFightingStyle ( ( eFightingStyle ) ucFightingStyle );
                 pPlayer->SetAlpha ( alpha.data.ucAlpha );
@@ -2234,12 +2236,14 @@ void CPacketHandler::Packet_EntityAdd ( NetBitStreamInterface& bitStream )
                     unsigned short usObjectID;
                     SEntityAlphaSync alpha;
                     SRotationRadiansSync rotationRadians ( false );
+                    bool bCanFloat;
 
                     // Read out the position, rotation, object ID and alpha value
                     if ( bitStream.Read ( &position ) &&
                          bitStream.Read ( &rotationRadians ) &&
                          bitStream.ReadCompressed ( usObjectID ) &&
-                         bitStream.Read ( &alpha ) )
+                         bitStream.Read ( &alpha ) &&
+                         bitStream.ReadBit ( bCanFloat ) )
                     {
                         // Valid object id?
                         if ( !CClientObjectManager::IsValidModel ( usObjectID ) )
@@ -2254,6 +2258,7 @@ void CPacketHandler::Packet_EntityAdd ( NetBitStreamInterface& bitStream )
                         {
                             pObject->SetOrientation ( position.data.vecPosition, rotationRadians.data.vecRotation );
                             pObject->SetAlpha ( alpha.data.ucAlpha );
+							pObject->SetCanFloat ( bCanFloat );
                         }
                         else
                         {
@@ -2487,6 +2492,7 @@ void CPacketHandler::Packet_EntityAdd ( NetBitStreamInterface& bitStream )
                     bool bDoorsUndamageable = bitStream.ReadBit ();
                     bool bDamageProof       = bitStream.ReadBit ();
                     bool bFrozen            = bitStream.ReadBit ();
+                    bool bCanFloat          = bitStream.ReadBit ();
                     bool bDerailed          = bitStream.ReadBit ();
                     bool bIsDerailable      = bitStream.ReadBit ();
                     bool bTrainDirection    = bitStream.ReadBit ();
@@ -2515,6 +2521,7 @@ void CPacketHandler::Packet_EntityAdd ( NetBitStreamInterface& bitStream )
                     pVehicle->SetDoorsUndamageable ( bDoorsUndamageable );
                     pVehicle->SetScriptCanBeDamaged ( !bDamageProof );
                     pVehicle->SetFrozen ( bFrozen );
+					pVehicle->SetCanFloat ( bCanFloat );
                     if ( CClientVehicleManager::IsTrainModel ( usModel ) )
                     {
                         pVehicle->SetDerailed ( bDerailed );
@@ -2786,6 +2793,7 @@ void CPacketHandler::Packet_EntityAdd ( NetBitStreamInterface& bitStream )
                     bool bSynced = bitStream.ReadBit ();
                     bool bIsHeadless = bitStream.ReadBit ();
                     bool bIsFrozen = bitStream.ReadBit ();
+                    bool bCanFloat = bitStream.ReadBit ();
 
                     CClientPed* pPed = new CClientPed ( g_pClientGame->m_pManager, usModel, EntityID );
                     pEntity = pPed;
@@ -2804,6 +2812,7 @@ void CPacketHandler::Packet_EntityAdd ( NetBitStreamInterface& bitStream )
                     pPed->SetHasJetPack ( bHasJetPack );
                     pPed->SetHeadless ( bIsHeadless );
                     pPed->SetFrozen ( bIsFrozen );
+                    pPed->SetCanFloat ( bCanFloat );
 
                     // Alpha
                     SEntityAlphaSync alpha;

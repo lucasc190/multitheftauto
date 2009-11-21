@@ -733,6 +733,27 @@ bool CStaticFunctionDefinitions::GetElementHealth ( CElement* pElement, float& f
 }
 
 
+bool CStaticFunctionDefinitions::CanElementFloat ( CElement* pElement, bool& bCanFloat )
+{
+    assert ( pElement );
+
+    switch ( pElement->GetType () )
+    {
+        case CElement::PED:
+        case CElement::PLAYER:
+        case CElement::VEHICLE:
+		case CElement::OBJECT:
+        {
+            bCanFloat = pElement->CanFloat ();
+            break;
+        }
+        default: return false;
+    }
+
+    return true;
+}
+
+
 bool CStaticFunctionDefinitions::GetElementModel ( CElement* pElement, unsigned short & usModel )
 {
     assert ( pElement );
@@ -1268,6 +1289,33 @@ bool CStaticFunctionDefinitions::SetElementAlpha ( CElement* pElement, unsigned 
     BitStream.pBitStream->Write ( pElement->GetID () );
     BitStream.pBitStream->Write ( ucAlpha );
     m_pPlayerManager->BroadcastOnlyJoined ( CLuaPacket ( SET_ELEMENT_ALPHA, *BitStream.pBitStream ) );
+
+    return true;
+}
+
+
+bool CStaticFunctionDefinitions::SetElementCanFloat ( CElement* pElement, bool bCanFloat )
+{
+    assert ( pElement );
+    RUN_CHILDREN SetElementCanFloat ( *iter, bCanFloat );
+
+    switch ( pElement->GetType () )
+    {
+        case CElement::PED:
+        case CElement::PLAYER:
+        case CElement::VEHICLE:
+        case CElement::OBJECT:
+        {
+            pElement->SetCanFloat ( bCanFloat );
+            break;
+        }
+        default: return false;
+    }
+
+    CBitStream BitStream;
+    BitStream.pBitStream->Write ( pElement->GetID () );
+    BitStream.pBitStream->Write ( bCanFloat );
+    m_pPlayerManager->BroadcastOnlyJoined ( CLuaPacket ( SET_ELEMENT_CAN_FLOAT, *BitStream.pBitStream ) );
 
     return true;
 }

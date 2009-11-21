@@ -32,6 +32,7 @@ void CElementRPCs::LoadFunctions ( void )
     AddHandler ( SET_ELEMENT_HEALTH,            SetElementHealth,           "SetElementHealth" );
     AddHandler ( SET_ELEMENT_MODEL,             SetElementModel,            "SetElementModel" );
     AddHandler ( SET_ELEMENT_ATTACHED_OFFSETS,  SetElementAttachedOffsets,  "SetElementAttachedOffsets" );
+    AddHandler ( SET_ELEMENT_CAN_FLOAT,         SetElementCanFloat,         "SetElementCanFloat" );
 }
 
 
@@ -369,6 +370,32 @@ void CElementRPCs::SetElementAlpha ( NetBitStreamInterface& bitStream )
                 {
                     CClientObject * pObject = static_cast < CClientObject* > ( pEntity );
                     pObject->SetAlpha ( ucAlpha );
+                    break;
+                }
+                default: break;
+            }
+        }
+    }
+}
+
+
+void CElementRPCs::SetElementCanFloat ( NetBitStreamInterface& bitStream )
+{
+    ElementID ID;
+    unsigned char ucCanFloat;
+    if ( bitStream.Read ( ID ) && bitStream.Read ( ucCanFloat ) )
+    {
+        CClientEntity* pEntity = CElementIDs::GetElement ( ID );
+        if ( pEntity )
+        {
+            switch ( pEntity->GetType () )
+            {
+                case CCLIENTPED:
+                case CCLIENTPLAYER:
+                case CCLIENTVEHICLE:
+                case CCLIENTOBJECT:
+                {
+                    pEntity->SetCanFloat ( ucCanFloat == 1 );
                     break;
                 }
                 default: break;

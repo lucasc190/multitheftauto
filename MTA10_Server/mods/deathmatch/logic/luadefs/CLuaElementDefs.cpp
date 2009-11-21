@@ -33,6 +33,7 @@ void CLuaElementDefs::LoadFunctions ( void )
     CLuaCFunctions::AddFunction ( "isElementWithinColShape", CLuaElementDefs::isElementWithinColShape );
     CLuaCFunctions::AddFunction ( "isElementWithinMarker", CLuaElementDefs::isElementWithinMarker );
     CLuaCFunctions::AddFunction ( "isElementInWater", CLuaElementDefs::isElementInWater );
+    CLuaCFunctions::AddFunction ( "canElementFloat", CLuaElementDefs::canElementFloat );
 
     CLuaCFunctions::AddFunction ( "getElementByID", CLuaElementDefs::getElementByID );
     CLuaCFunctions::AddFunction ( "getElementByIndex", CLuaElementDefs::getElementByIndex );
@@ -55,6 +56,7 @@ void CLuaElementDefs::LoadFunctions ( void )
     CLuaCFunctions::AddFunction ( "getElementHealth", CLuaElementDefs::getElementHealth );
     CLuaCFunctions::AddFunction ( "getElementModel", CLuaElementDefs::getElementModel );
     CLuaCFunctions::AddFunction ( "getElementSyncer", CLuaElementDefs::getElementSyncer );
+    CLuaCFunctions::AddFunction ( "setElementCanFloat", CLuaElementDefs::setElementCanFloat );
 
     // Attachement
     CLuaCFunctions::AddFunction ( "attachElements", CLuaElementDefs::attachElements );
@@ -1380,6 +1382,54 @@ int CLuaElementDefs::setElementVelocity ( lua_State* luaVM )
     }
     else
         m_pScriptDebugging->LogBadType ( luaVM, "setElementVelocity" );
+
+    lua_pushboolean ( luaVM, false );
+    return 1;
+}
+
+
+int CLuaElementDefs::setElementCanFloat ( lua_State* luaVM )
+{
+    if ( lua_type ( luaVM, 1 ) == LUA_TLIGHTUSERDATA &&
+        lua_type ( luaVM, 2 ) == LUA_TBOOLEAN )
+    {
+        CElement* pElement = lua_toelement ( luaVM, 1 );
+        if ( pElement )
+        {
+            if ( CStaticFunctionDefinitions::SetElementCanFloat ( pElement, lua_toboolean ( luaVM, 2 ) ? true:false ) )
+            {
+                lua_pushboolean ( luaVM, true );    
+                return 1;
+            }        
+        }
+        else
+            m_pScriptDebugging->LogBadPointer ( luaVM, "setElementCanFloat", "element", 1 );
+    }
+    else
+        m_pScriptDebugging->LogBadType ( luaVM, "setElementCanFloat" );
+
+    lua_pushboolean ( luaVM, false );
+    return 1;
+}
+
+
+int CLuaElementDefs::canElementFloat ( lua_State* luaVM )
+{
+    if ( lua_type ( luaVM, 1 ) == LUA_TLIGHTUSERDATA )
+    {
+        CElement* pElement = lua_toelement ( luaVM, 1 );
+        if ( pElement )
+        {
+            bool bCanFloat = false;
+            if ( CStaticFunctionDefinitions::CanElementFloat ( pElement, bCanFloat ) )
+            {
+                lua_pushboolean ( luaVM, bCanFloat );
+                return 1;
+            }
+        }
+    }
+    else
+        m_pScriptDebugging->LogBadType ( luaVM, "canElementFloat" );
 
     lua_pushboolean ( luaVM, false );
     return 1;
