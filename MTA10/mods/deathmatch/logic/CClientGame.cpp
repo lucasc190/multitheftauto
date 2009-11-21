@@ -4268,6 +4268,9 @@ void CClientGame::ResetMapInfo ( void )
         // Frozen state
         m_pLocalPlayer->SetFrozen ( false );
 
+        // Can-float state
+        m_pLocalPlayer->SetCanFloat ( true );
+
         // Voice
         short sVoiceType, sVoiceID;
         m_pLocalPlayer->GetModelInfo ()->GetVoice ( &sVoiceType, &sVoiceID );

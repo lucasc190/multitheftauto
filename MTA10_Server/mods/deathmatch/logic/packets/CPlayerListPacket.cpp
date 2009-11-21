@@ -75,6 +75,7 @@ bool CPlayerListPacket::Write ( NetBitStreamInterface& BitStream ) const
         BitStream.WriteBit ( pPlayer->IsNametagColorOverridden () );
         BitStream.WriteBit ( pPlayer->IsHeadless() );
         BitStream.WriteBit ( pPlayer->IsFrozen() );
+        BitStream.WriteBit ( pPlayer->CanFloat() );
 
         // Nametag stuff
         unsigned char ucNametagTextLength = 0;
