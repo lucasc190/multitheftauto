@@ -2585,7 +2585,7 @@ bool CClientVehicle::IsOnWater ( void )
         if ( g_pGame->GetWaterManager ()->GetWaterLevel ( vecPosition, &fWaterLevel, true, &vecTemp ) )
         {
             if (fDistToBaseOfModel <= fWaterLevel) {
-                return true;
+                return CanFloat ();
             }
         }
     }
@@ -2608,7 +2608,7 @@ bool CClientVehicle::IsInWater ( void )
             {
                 if ( vecPosition.fZ <= fWaterLevel )
                 {
-                    return true;
+                    return CanFloat ();
                 }
             }
         }
